@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+            <script src="jquery.js"></script>
+            <script src="quicksearch.js"></script>
+            <style>
+                #area p
+                {
+                        background-color: greenyellow;
+                        color:darkgreen;
+                        
+                }
+                #area
+                {
+                    text-align: center;
+                }
+            </style>
+            
+           
+        </head>
+        <body>
+            <h3>Search</h3> <br /><hr />
+                <input type="text" id="q" class="form-control" placeholder="Enter your search term..." onkeyup="search()" onkeydown="search()" />
+                <div id="area">
+                    Enter at least 3 characters...
+                </div>
+                <script>
+                   
+                    cached = false;
+                
+                    function  search() {
+                        url = "test.html";   // URL.    Kindly make sure that the URL allows cross origin requests. Otherwise CORS policy error will be raised
+                        minlength = 3;  // Minimum length for which search shall be performed.
+
+                        
+
+                        var qs = $('input#q').quicksearch("#area p",{ // Here p tag is chosen for every line. Other tags (eg. li) can also be chosen.
+                    
+                            'minValLength': minlength
+                                
+                        });
+                       
+                        
+                     if($('input#q').val().length>minlength)
+                     {
+                         $("#area").show();
+                         if(!cached)
+                         {
+                                
+                                            $.ajax({
+                                                'url': url,
+                                                'type': 'GET',
+                                                error: function(jqXHR, textStatus, err)
+                                                {
+                                                    alert("Error Occured! Unable to reach the given URL. Kindly check if the URL is valid. Also check whether cross origin access is permitted " + err);
+                                    
+                                                },
+                                            
+                                                'success': function (data) {
+                                                    $("#area").html(data);
+                                                
+                                                    cached = true;
+                                                    
+                                                
+                                                    qs.cache();
+                                                    
+                                                    
+                                                }
+                                            
+                                                                
+                                    
+                            
+                            
+                                        });
+                                    
+                                   
+                         }
+                      
+                        
+                     }
+                     else{
+                         $("#area").hide();
+                     }
+                   
+                    
+                   
+                }
+                </script>
+
+        </body>
+    </html>
